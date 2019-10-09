@@ -108,3 +108,6 @@ venv.bak/
 
 # project spec
 .vscode
+*.sqlite3
+Insta/migrations/
+static/images
