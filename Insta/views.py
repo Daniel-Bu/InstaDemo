@@ -50,10 +50,10 @@ class PostCreateView(CreateView):
     login_url = 'login'
 
     def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.author = self.request.user
-        obj.save()
-        return HttpResponseRedirect(self.get_success_url())
+        form_new = form.save(commit=False)
+        form_new.author = self.request.user
+        form_new.save()
+        return HttpResponseRedirect(reverse_lazy('home'))
 
 class PostUpdateView(UpdateView):
     model = Post
