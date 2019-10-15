@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.http import HttpResponseRedirect
 from Insta.models import UserConnection
 from Insta.forms import CustomUserCreationForm
 from Insta.models import InstaUser, Post, UserConnection, Like, Comment
@@ -45,8 +46,14 @@ class ExploreView(LoginRequiredMixin, ListView):
 class PostCreateView(CreateView):
     model = Post
     template_name = "post_create.html"
-    fields = '__all__'
+    fields = ['title', 'image']
     login_url = 'login'
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.author = self.request.user
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 class PostUpdateView(UpdateView):
     model = Post
